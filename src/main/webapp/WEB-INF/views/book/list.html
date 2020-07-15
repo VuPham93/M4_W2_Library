@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table border="1">
+    <caption>Book List</caption>
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Quantity</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="book : ${bookList}">
+        <td th:text="${book.id}"></td>
+        <td >
+            <a th:href="@{/book/{id}(id=${book.id})}" th:text="${book.name}"></a>
+        </td>
+        <td >
+            <a th:text="${book.quantity}"></a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<div>
+    <a th:href="@{'/book'(page=${bookList.number - 1})}" th:if="${bookList.hasPrevious()}">Previous</a>
+    <span th:text="${bookList.number+1}"></span>/<span th:text="${bookList.totalPages}"></span>
+    <a th:href="@{'/book'(page=${bookList.number + 1})}" th:if="${bookList.hasNext()}">Next</a>
+</div>
+
+<form th:action="@{/return-book}" method="post">
+    <input type="number" name="borrowCode" th:value="${borrowCode}">
+    <input type="submit" value="Return book"/>
+</form>
+
+<table border="1">
+    <caption>Borrow List</caption>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Borrow code</th>
+        <th>Book</th>
+        <th>Book Quantity</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="b : ${borrow}">
+        <td th:text="${b.borrower.name}"></td>
+        <td th:text="${b.borrowCode}"></td>
+        <td th:text="${b.book.name}"></td>
+        <td th:text="${b.book.quantity}"></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
